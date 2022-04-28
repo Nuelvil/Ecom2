@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load humanize%}
+{% block content %}
+
+<!-- swiper banner -->
+<div class="swiper banner">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+          <img src="{% static 'img/slider-1 (1).webp' %}" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="{% static 'img/slider-2.webp' %}" alt="">
+
+      </div>
+      <div class="swiper-slide">
+        <img src="{% static 'img/slider-3.webp' %}" alt="">
+
+      </div>                                                                                                                                                                                                                                    
+
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<section id="featured" class="py-4 my-3">
+    <div class="container">
+        <!-- intro -->
+       <div class="intro mb-5">
+        <h2 class="text-center">
+            <span>&#8668;</span> Category <span>&#8669;</span>
+        </h2>
+       </div>
+</section>
+
+<!-- featured  -->
+<section id="featured" class="py-4 my-3">
+    <div class="container">
+        <!-- intro -->
+       <div class="intro mb-5"> 
+        <h2 class="text-center">
+            <span>&#8668;</span> Featured <span>&#8669;</span>
+        </h2>
+       </div>
+       <!-- product list -->
+       <div class="row">
+         {% if show %}  
+           {% for item  in show  %}
+           <div class="col-12 col-md-3 image">
+            <a href="{% url 'singleproduct' item.slug %}">
+                <div class="product">
+                    <img src="{{ item.image.url}}" alt="" class="img-fluid">
+                    <h5>{{item.title}}</h5>
+                    <h6>
+                        {% if item.discount_price %}
+                        &#8358; {{item.discount_price | intcomma}} <del>&#8358; {{item.price}} </del>
+                        {% else %}
+                        &#8358; {{item.price | intcomma}}
+                        {% endif %}
+                    </h6>
+                    <div class="stars"> 
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i> 
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-half"></i>
+                    </div>
+                    <a href="{% url 'addtocart' item.id %}" class="btn">ADD TO CART</a>
+                   </div>
+            </a>
+        </div>
+           {% endfor %}
+        
+            <nav>
+                <ul class="pagination">
+                    {% if paginators.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page{{ paginators.previous_page_number}}" >Previous</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">Previous</a>
+                  </li>
+                  {% endif %}
+    
+                  {% for i in paginators.paginators.page_range %}
+                  {% if i == paginators.number %}
+                  <li class="page-item active"><a class="page-link">{{i}}</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  
+                  {% if paginators.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{paginators.next_page_number}}">Next</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+            </nav>
+         {% endif %}
+        </div>
+        {% else %}
+        <p class="text-center lead bg-danger p-3 m-3">
+            No Products
+        </p>
+          
+        {% endif %}
+    </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+  
+{% endblock content %}
